@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPOJI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Design System / Variables */
+        :root {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F9F8F6;
+            --accent-gold: #C5A059;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --spacing-xl: 120px;
+            --spacing-lg: 80px;
+            --spacing-md: 40px;
+            --spacing-sm: 20px;
+            --font-serif: 'Shippori Mincho', serif;
+            --font-sans: 'Noto Sans JP', sans-serif;
+            --header-height: 80px;
+            --transition-slow: 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-md: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-main);
+            background-color: var(--bg-primary);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-md);
+        }
+
+        li {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        section {
+            padding: var(--spacing-xl) 5%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            background: var(--bg-primary);
+            transition: var(--transition-md);
+            border-bottom: 1px solid #eee;
+        }
+
+        header.scrolled {
+            background: var(--bg-primary);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            height: 70px;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            letter-spacing: 0.3em;
+            color: var(--text-main);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .nav-toggle {
+            position: absolute;
+            right: 5%;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .nav-toggle span {
+            width: 24px;
+            height: 1px;
+            background: var(--text-main);
+            transition: var(--transition-md);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://baseec-img-mng.akamaized.net/images/shop_front/POPPOJI-base-shop/4ce8d47442019d7cda3c17f004ede26e.JPG');
+            background-size: cover;
+            background-position: center;
+            transform: scale(1.05);
+            animation: heroZoom 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes heroZoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 2rem;
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp var(--transition-slow) forwards 0.5s;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            line-height: 2;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp var(--transition-slow) forwards 0.8s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Usage Scenes */
+        .usage-scenes {
+            background-color: var(--bg-secondary);
+        }
+
+        .scenes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        .scene-card {
+            background: var(--bg-primary);
+            padding: var(--spacing-lg) var(--spacing-md);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: var(--transition-md);
+        }
+
+        .scene-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .scene-label {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .scene-card h3 {
+            font-size: 24px;
+            margin-bottom: 1.5rem;
+        }
+
+        .scene-description {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        /* Products Section */
+        .products {
+            background-color: var(--bg-primary);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            display: inline-block;
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 1px;
+            background: var(--accent-gold);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .product-card {
+            cursor: pointer;
+        }
+
+        .product-image-wrap {
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: #f0f0f0;
+            margin-bottom: 15px;
+        }
+
+        .product-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-slow);
+        }
+
+        .product-card:hover .product-image-wrap img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            text-align: center;
+        }
+
+        .product-name {
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+        }
+
+        /* Philosophy */
+        .philosophy {
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .philosophy-image {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .philosophy-image img {
+            width: 100%;
+            height: auto;
+            transition: var(--transition-slow);
+        }
+
+        .philosophy-content {
+            flex: 1;
+            padding-right: 5%;
+        }
+
+        .philosophy h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .philosophy p {
+            color: var(--text-sub);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--spacing-lg) 5%;
+            background-color: var(--bg-primary);
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .footer-nav {
+            margin-bottom: 2rem;
+        }
+
+        .footer-nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-nav a {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .copyright {
+            font-size: 0.75rem;
+            color: #999;
+            letter-spacing: 0.1em;
+        }
+        /* Instagram Section */
+        .instagram {
+            background-color: var(--bg-primary);
+        }
+
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .insta-item {
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .insta-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-slow);
+        }
+
+        .insta-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition-md);
+            color: #fff;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+        }
+
+        .insta-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .insta-item:hover .insta-overlay {
+            opacity: 1;
+        }
+
+        .insta-link-wrap {
+            text-align: center;
+            margin-top: var(--spacing-md);
+        }
+
+        .insta-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 1px solid var(--text-main);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            transition: var(--transition-md);
+        }
+
+        .insta-btn:hover {
+            background: var(--text-main);
+            color: #fff;
+        }
+
+        /* Voice Section (Testimonials) */
+        .voice {
+            background-color: var(--bg-primary);
+        }
+
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .voice-card {
+            padding: 40px 30px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            position: relative;
+            transition: var(--transition-md);
+        }
+
+        .voice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .voice-content {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 25px;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .voice-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-top: 1px solid #e0ddd7;
+            padding-top: 20px;
+        }
+
+        .author-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+            font-family: var(--font-sans);
+        }
+
+        .author-info span {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        @media (max-width: 968px) {
+            .voice-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .scenes-grid {
+                grid-template-columns: 1fr;
+            }
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .philosophy {
+                flex-direction: column;
+            }
+            .philosophy-content {
+                padding-right: 0;
+            }
+            :root {
+                --spacing-xl: 80px;
+                --spacing-lg: 60px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .nav-toggle {
+                display: flex;
+            }
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-md);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu ul {
+            text-align: center;
+        }
+
+        .mobile-menu li {
+            margin-bottom: 30px;
+        }
+
+        .mobile-menu a {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+        }
+
+        /* Nav Toggle Animation */
+        .nav-toggle.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-toggle.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <a href="#" class="logo">POPPOJI</a>
+        <div class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1>「褒める」を、形にする。</h1>
+                <p>
+                    子供の笑顔のために。働く仲間の輝きのために。<br>
+                    言葉を超える「称賛」を、天然石の輝きに託して。
+                </p>
+            </div>
+        </section>
+
+        <!-- Usage Scenes -->
+        <section class="usage-scenes">
+            <div class="container">
+                <div class="scenes-grid">
+                    <div class="scene-card">
+                        <div style="aspect-ratio: 16/9; overflow: hidden; margin-bottom: 25px; background: #f0f0f0;">
+                            <img src="assets/スクリーンショット 2026-01-12 2.11.58.png" alt="Family Scene" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <span class="scene-label">Scene A</span>
+                        <h3>家族の「できた！」<br>を形にする</h3>
+                        <p class="scene-description">
+                            今日のがんばりを、一生の宝物に。<br>
+                            わが子の成長をみんなで褒めて、応援する贈りもの。
+                        </p>
+                    </div>
+                    <div class="scene-card">
+                        <div style="aspect-ratio: 16/9; overflow: hidden; margin-bottom: 25px; background: #f0f0f0;">
+                            <img src="assets/1f95299f227217a02b3f18690e084c3f.jpg" alt="Work Scene" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <span class="scene-label">Scene B</span>
+                        <h3>仲間の「お疲れ様」<br>を形にする</h3>
+                        <p class="scene-description">
+                            いつも助けてくれるあの人へ。<br>
+                            「ありがとう」の気持ちを、ずっと残る輝きと一緒に。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Voice Section -->
+        <section class="voice">
+            <div class="container">
+                <div class="section-title">
+                    <h2>VOICE</h2>
+                </div>
+                <div class="voice-grid">
+                    <div class="voice-card">
+                        <p class="voice-content">「頑張った自分へのご褒美として購入しました。箱を開けた瞬間の天然石の輝きに、心が洗われるような気持ちになりました。毎日身に着けるたびに、また明日から頑張ろうと思えます。」</p>
+                        <div class="voice-author">
+                            <div class="author-info">
+                                <h4>A. S. 様</h4>
+                                <span>30代・会社員</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voice-card">
+                        <p class="voice-content">「部下の昇進祝いにPosi-Cliを贈りました。『褒めるを形にする』というコンセプトが素晴らしく、贈った相手もその意味を知って涙ぐんで喜んでくれました。ギフトに最適です。」</p>
+                        <div class="voice-author">
+                            <div class="author-info">
+                                <h4>M. K. 様</h4>
+                                <span>40代・マネージャー</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voice-card">
+                        <p class="voice-content">「娘の成人の記念に。シンプルながら芯のあるデザインが気に入っています。本物の素材（14kgf）を使っているので、長く大切に使ってもらえると確信しています。」</p>
+                        <div class="voice-author">
+                            <div class="author-info">
+                                <h4>Y. N. 様</h4>
+                                <span>50代・主婦</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="products">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Featured Products</h2>
+                </div>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image-wrap">
+                            <img src="https://baseec-img-mng.akamaized.net/images/item/origin/cfdeb24502200b2a06b4a20a02cf8787.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal" alt="Posi-Cli 01">
+                        </div>
+                        <div class="product-info">
+                            <p class="product-name">Posi-Cli / 称賛の木製クリップ</p>
+                            <p class="product-price">¥3,850</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image-wrap">
+                            <img src="https://baseec-img-mng.akamaized.net/images/item/origin/6373f1748204115acf823fdf47e0be68.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal" alt="Posi-Cli 02">
+                        </div>
+                        <div class="product-info">
+                            <p class="product-name">Posi-Cli / 成長の記録</p>
+                            <p class="product-price">¥3,850</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image-wrap">
+                            <img src="https://baseec-img-mng.akamaized.net/images/item/origin/b436fe96b51692547248f027ae1ff2c6.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal" alt="Posi-Cli 03">
+                        </div>
+                        <div class="product-info">
+                            <p class="product-name">Posi-Cli / 感謝の灯火</p>
+                            <p class="product-price">¥3,850</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image-wrap">
+                            <img src="https://baseec-img-mng.akamaized.net/images/item/origin/5886ee3315e64e280008b4418aa3020e.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal" alt="Posi-Cli 04">
+                        </div>
+                        <div class="product-info">
+                            <p class="product-name">Posi-Cli / 絆のメッセンジャー</p>
+                            <p class="product-price">¥3,850</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Philosophy -->
+        <section class="philosophy">
+            <div class="container" style="display: contents;">
+                <div class="philosophy-image">
+                    <img src="https://baseec-img-mng.akamaized.net/images/shop_front/POPPOJI-base-shop/101b04785d535aa69625a7745dd2c94a.JPG" alt="Philosophy Image">
+                </div>
+                <div class="philosophy-content">
+                    <h2>長く愛されるための、<br>誠実な素材選び。</h2>
+                    <p>
+                        POPPOJIでは、時を経ても輝きを失わない14kgf（ゴールドフィルド）と、ひとつひとつ表情が異なる天然石を厳選しています。
+                    </p>
+                    <p>
+                        「称賛」という尊い感情を形にするからこそ、手にした瞬間の感動が長く続くよう、誠実なものづくりを追求しています。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instagram Section -->
+        <section class="instagram">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Instagram</h2>
+                    <p style="text-align: center; color: var(--text-sub); font-size: 0.9rem; margin-top: 10px; margin-bottom: 60px;">@po_ppo_ji</p>
+                </div>
+                <div class="instagram-grid">
+                    <div class="insta-item">
+                        <img src="assets/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-01-12%201.57.47.png" alt="Instagram Post 1">
+                        <div class="insta-overlay">View on Instagram</div>
+                    </div>
+                    <div class="insta-item">
+                        <img src="assets/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-01-12%201.57.54.png" alt="Instagram Post 2">
+                        <div class="insta-overlay">View on Instagram</div>
+                    </div>
+                    <div class="insta-item">
+                        <img src="assets/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-01-12%201.58.02.png" alt="Instagram Post 3">
+                        <div class="insta-overlay">View on Instagram</div>
+                    </div>
+                    <div class="insta-item">
+                        <img src="assets/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-01-12%201.58.12.png" alt="Instagram Post 4">
+                        <div class="insta-overlay">View on Instagram</div>
+                    </div>
+                    <div class="insta-item">
+                        <img src="assets/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-01-12%201.58.18.png" alt="Instagram Post 5">
+                        <div class="insta-overlay">View on Instagram</div>
+                    </div>
+                    <div class="insta-item">
+                        <img src="assets/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-01-12%201.58.33.png" alt="Instagram Post 6">
+                        <div class="insta-overlay">View on Instagram</div>
+                    </div>
+                </div>
+                <div class="insta-link-wrap">
+                    <a href="https://www.instagram.com/po_ppo_ji/" target="_blank" class="insta-btn">FOLLOW US</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">ABOUT</a></li>
+            <li><a href="#">SHOP</a></li>
+            <li><a href="#">CONTACT</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        <div class="container">
+            <span class="footer-logo">POPPOJI</span>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">ABOUT</a></li>
+                    <li><a href="#">SHOP</a></li>
+                    <li><a href="#">CONTACT</a></li>
+                </ul>
+            </nav>
+            <p class="copyright">&copy; 2026 POPPOJI. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Control
+        const navToggle = document.getElementById('navToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            
+            // Prevent scrolling when menu is open
+            if (mobileMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close menu when clicking links
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+    </script>
+</body>
+</html>
